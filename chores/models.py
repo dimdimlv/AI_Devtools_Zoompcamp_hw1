@@ -1,6 +1,8 @@
 from django.core.validators import MinValueValidator
 from django.db import models
 
+from .dates import today as today_
+
 
 class Housemate(models.Model):
     """Someone who can claim a chore. Identity is a name, not an account."""
@@ -49,6 +51,28 @@ class Chore(models.Model):
                 name='chore_interval_days_at_least_1',
             ),
         ]
+
+    def status(self, today=None):
+        """One of 'overdue', 'due_today' or 'upcoming'."""
+        today = today or today_()
+        if self.next_due < today:
+            return 'overdue'
+        if self.next_due == today:
+            return 'due_today'
+        return 'upcoming'
+
+    def is_overdue(self, today=None):
+        return self.status(today) == 'overdue'
+
+    def days_late(self, today=None):
+        """Whole days past due, or 0 if it is not overdue."""
+        today = today or today_()
+        return max((today - self.next_due).days, 0)
+
+    def days_until_due(self, today=None):
+        """Whole days until due, or 0 if it is due today or overdue."""
+        today = today or today_()
+        return max((self.next_due - today).days, 0)
 
     def __str__(self):
         return self.name

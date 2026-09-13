@@ -40,7 +40,7 @@ nullable with `on_delete=SET_NULL`.
 
 *Done when:* migration applies on a fresh DB; a `Chore` with `interval_days=0` fails `full_clean()`.
 
-## T4 — Recurrence engine + tests
+## T4 — Recurrence engine + tests ✅
 
 `chores/recurrence.py` with `next_due_date(recurrence, current_due, completed_on, interval_days) -> date`
 — pure, no ORM imports. `tests/test_recurrence.py` covers: INTERVAL on time / late / early;
@@ -50,7 +50,7 @@ future); FIXED done early; `interval_days=1`; a months-late completion.
 *Done when:* `uv run pytest tests/test_recurrence.py` is green. This is the bulk of the test value —
 write it before any view code.
 
-## T5 — Chore status helpers
+## T5 — Chore status helpers ✅
 
 `Chore.is_overdue(today)`, `days_late(today)`, `status(today)` → `overdue` / `due_today` / `upcoming`.
 A `chores/dates.py` (or similar) `today()` wrapper over `timezone.localdate()` that every view calls,
