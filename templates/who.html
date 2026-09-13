@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Who are you?{% endblock %}
+
+{% block content %}
+<h1>Who are you?</h1>
+<p class="lede">Pick your name. There is no password — this only decides whose name lands on a
+completed chore.</p>
+
+{% if housemates %}
+<form method="post" class="picker">
+  {% csrf_token %}
+  <input type="hidden" name="next" value="{{ next }}">
+  {% for housemate in housemates %}
+    <button type="submit" name="housemate" value="{{ housemate.pk }}"
+            class="{% if housemate == current_housemate %}current{% endif %}">
+      {{ housemate.name }}
+    </button>
+  {% endfor %}
+</form>
+{% else %}
+<p class="empty">No housemates yet — add some in
+  <a href="{% url 'admin:chores_housemate_changelist' %}">the admin</a>, or run
+  <code>uv run python manage.py seed_demo</code>.</p>
+{% endif %}
+{% endblock %}

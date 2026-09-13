@@ -1,0 +1,15 @@
+<li class="chore">
+  <div class="what">
+    <span class="name">{{ chore.name }}</span>
+    {% if chore.notes %}<span class="notes">{{ chore.notes }}</span>{% endif %}
+    <span class="when">
+      {% if chore.late_days %}{{ chore.late_days }} day{{ chore.late_days|pluralize }} late{% else %}due {{ chore.next_due|date:"D j M" }}{% endif %}
+      · every {{ chore.interval_days }} day{{ chore.interval_days|pluralize }}, {{ chore.get_recurrence_display|lower }}
+    </span>
+  </div>
+  <form class="actions" method="post" action="{% url 'chores:done' chore.pk %}">
+    {% csrf_token %}
+    <button class="done" type="submit">Done</button>
+    <button class="skip" type="submit" formaction="{% url 'chores:skip' chore.pk %}">Skip</button>
+  </form>
+</li>

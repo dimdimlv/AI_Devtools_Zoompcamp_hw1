@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}What needs doing{% endblock %}
+
+{% block content %}
+<h1>What needs doing</h1>
+<p class="today">Today is {{ today|date:"l j F Y" }}.</p>
+
+{% if not overdue and not due_today and not upcoming %}
+  <p class="empty">Nothing due in the next {{ upcoming_window_days }} days.
+  <a href="{% url 'chores:chore_new' %}">Add a chore</a>.</p>
+{% endif %}
+
+{% if overdue %}
+<section class="group overdue">
+  <h2>Overdue <span class="count">{{ overdue|length }}</span></h2>
+  <ul class="chores">
+    {% for chore in overdue %}
+      {% include "_chore_row.html" with lateness=chore.days_late %}
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% if due_today %}
+<section class="group due-today">
+  <h2>Due today <span class="count">{{ due_today|length }}</span></h2>
+  <ul class="chores">
+    {% for chore in due_today %}{% include "_chore_row.html" %}{% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% if upcoming %}
+<section class="group upcoming">
+  <h2>Next {{ upcoming_window_days }} days <span class="count">{{ upcoming|length }}</span></h2>
+  <ul class="chores">
+    {% for chore in upcoming %}{% include "_chore_row.html" %}{% endfor %}
+  </ul>
+</section>
+{% endif %}
+{% endblock %}

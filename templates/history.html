@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}History{% endblock %}
+
+{% block content %}
+<h1>History</h1>
+
+{% if page.object_list %}
+<table class="history">
+  <thead><tr><th>Chore</th><th>Who</th><th>When</th><th></th></tr></thead>
+  <tbody>
+  {% for c in page %}
+    <tr class="{% if c.was_skipped %}skipped{% endif %}">
+      <td>{{ c.chore.name }}</td>
+      <td>{% if c.housemate %}{{ c.housemate.name }}{% else %}<span class="nobody">—</span>{% endif %}</td>
+      <td>{{ c.completed_on|date:"D j M Y" }}</td>
+      <td>
+        {% if c.was_skipped %}<span class="tag skipped">skipped</span>
+        {% elif c.days_late > 0 %}<span class="tag late">{{ c.days_late }} day{{ c.days_late|pluralize }} late</span>
+        {% elif c.days_late < 0 %}<span class="tag early">early</span>
+        {% else %}<span class="tag on-time">on time</span>{% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% if page.has_other_pages %}
+<nav class="pagination">
+  {% if page.has_previous %}<a href="?page={{ page.previous_page_number }}">← Newer</a>{% endif %}
+  <span>Page {{ page.number }} of {{ page.paginator.num_pages }}</span>
+  {% if page.has_next %}<a href="?page={{ page.next_page_number }}">Older →</a>{% endif %}
+</nav>
+{% endif %}
+
+{% else %}
+<p class="empty">Nothing done yet.</p>
+{% endif %}
+{% endblock %}

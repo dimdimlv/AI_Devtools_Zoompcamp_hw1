@@ -1,0 +1,36 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Chores{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="{% url 'chores:board' %}">Chores</a>
+    <nav>
+      <a href="{% url 'chores:board' %}">Board</a>
+      <a href="{% url 'chores:history' %}">History</a>
+      <a href="{% url 'chores:chore_list' %}">Manage</a>
+    </nav>
+    <span class="identity">
+      {% if current_housemate %}
+        <a href="{% url 'chores:who' %}">{{ current_housemate.name }}</a>
+      {% else %}
+        <a class="unset" href="{% url 'chores:who' %}">Who are you?</a>
+      {% endif %}
+      {% if overdue_count %}<span class="badge" title="{{ overdue_count }} overdue">{{ overdue_count }}</span>{% endif %}
+    </span>
+  </header>
+
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}<li>{{ message }}</li>{% endfor %}
+    </ul>
+  {% endif %}
+
+  <main>{% block content %}{% endblock %}</main>
+</body>
+</html>

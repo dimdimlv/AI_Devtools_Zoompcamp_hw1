@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Manage chores{% endblock %}
+
+{% block content %}
+<h1>Chores</h1>
+<p><a class="button" href="{% url 'chores:chore_new' %}">Add a chore</a></p>
+
+{% if chores %}
+<table class="chore-table">
+  <thead><tr><th>Name</th><th>Recurs</th><th>Every</th><th>Next due</th><th></th></tr></thead>
+  <tbody>
+  {% for chore in chores %}
+    <tr>
+      <td>{{ chore.name }}{% if chore.notes %}<span class="notes">{{ chore.notes }}</span>{% endif %}</td>
+      <td>{{ chore.get_recurrence_display }}</td>
+      <td>{{ chore.interval_days }} day{{ chore.interval_days|pluralize }}</td>
+      <td class="{{ chore.status }}">{{ chore.next_due|date:"D j M Y" }}</td>
+      <td class="row-actions">
+        <a href="{% url 'chores:chore_edit' chore.pk %}">Edit</a>
+        <a href="{% url 'chores:chore_delete' chore.pk %}">Remove</a>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No chores yet.</p>
+{% endif %}
+{% endblock %}

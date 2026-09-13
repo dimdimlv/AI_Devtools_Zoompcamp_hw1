@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Remove {{ chore.name }}?{% endblock %}
+
+{% block content %}
+<h1>Remove “{{ chore.name }}”?</h1>
+<p>It will stop appearing on the board. Its history stays in
+  <a href="{% url 'chores:history' %}">the log</a>.</p>
+
+<form method="post">
+  {% csrf_token %}
+  <p class="form-actions">
+    <button class="danger" type="submit">Remove it</button>
+    <a href="{% url 'chores:chore_list' %}">Keep it</a>
+  </p>
+</form>
+{% endblock %}

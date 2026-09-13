@@ -58,7 +58,7 @@ so tests can monkeypatch a fixed date.
 
 *Done when:* helpers are unit-tested against a frozen `today`.
 
-## T6 — Identity: `/who/` + context processor
+## T6 — Identity: `/who/` + context processor ✅
 
 Name picker listing active housemates; selection writes `housemate_id` into the session.
 `chores/context_processors.py` exposes `current_housemate` to every template (registered in settings).
@@ -66,14 +66,14 @@ Name picker listing active housemates; selection writes `housemate_id` into the 
 *Done when:* picking a name persists across requests; a stale/deleted `housemate_id` degrades to "no
 identity" rather than erroring.
 
-## T7 — Board view `/`
+## T7 — Board view `/` ✅
 
 Three groups: **Overdue** (most-late first, "3 days late"), **Due today**, **Upcoming** (next 14 days).
 Header shows the current housemate and the overdue count. Templates `base.html` + `board.html`.
 
 *Done when:* the board renders from seed data with correct grouping and ordering for a frozen `today`.
 
-## T8 — Claim & skip actions
+## T8 — Claim & skip actions ✅
 
 `POST /chores/<pk>/done/` and `POST /chores/<pk>/skip/`. Each runs in `transaction.atomic()` and
 re-reads the chore with `select_for_update()`, writes a `Completion` (snapshotting `due_date`,
@@ -83,7 +83,7 @@ redirect to `/who/` without mutating anything.
 *Done when:* `tests/test_views.py` covers claim, skip, the `due_date` snapshot, the advance, and the
 anonymous redirect. Two concurrent "Done" clicks must yield one completion and one advance.
 
-## T9 — Seed command
+## T9 — Seed command ✅
 
 `chores/management/commands/seed_demo.py`: 3 housemates and ~8 realistic chores across both recurrence
 modes, deliberately straddling the boundaries — a couple overdue, one due today, the rest upcoming.
@@ -92,14 +92,14 @@ Idempotent enough to re-run.
 *Done when:* `uv run python manage.py seed_demo` on a fresh DB produces a board with all three sections
 populated.
 
-## T10 — History `/history/`
+## T10 — History `/history/` ✅
 
 Reverse-chronological completion log — chore, who, when, late / on-time / skipped — paginated.
 `select_related` on chore and housemate to keep it to one query per page.
 
 *Done when:* completions from T8 appear with the acting housemate's name and the right label.
 
-## T11 — Chore CRUD
+## T11 — Chore CRUD ✅
 
 `/chores/`, `/chores/new/`, `/chores/<pk>/edit/`, `/chores/<pk>/delete/` via a `ChoreForm` ModelForm.
 Delete is a soft `is_active=False` so history survives. (Admin registration for all three models is
@@ -108,7 +108,7 @@ already done — it landed early so there was something to inspect before the bo
 *Done when:* a chore added through the UI lands in the correct board section; a deleted chore leaves
 `/history/` intact.
 
-## T12 — Styling
+## T12 — Styling ✅
 
 One small `static/css/app.css`: overdue = red accent, due-today = amber, upcoming = muted. No build step.
 
