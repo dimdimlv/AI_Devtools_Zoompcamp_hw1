@@ -114,14 +114,14 @@ One small `static/css/app.css`: overdue = red accent, due-today = amber, upcomin
 
 *Done when:* the three board sections are distinguishable at a glance.
 
-## T13 — CLAUDE.md + README
+## T13 — CLAUDE.md + README ✅
 
 `CLAUDE.md`: uv-only rule, where the recurrence logic lives, run/test commands. README updated from
 "not yet started" to real setup / run / seed / test instructions.
 
 *Done when:* a fresh clone can follow the README end to end.
 
-## T14 — Verification pass
+## T14 — Verification pass ✅
 
 Run the plan's checklist: `uv sync` → `migrate` → `seed_demo` → `runserver` → `pytest`, then in the
 browser: pick a name → overdue-first board with day counts → **Done** on an overdue chore moves it to
@@ -129,6 +129,10 @@ Upcoming with an advanced date → `/history/` shows the entry → **Skip** adva
 anyone → a new chore from `/chores/new/` lands in the right section.
 
 *Done when:* every step passes on a fresh database.
+
+**Verified.** `uv sync` → `migrate` → `seed_demo` → `pytest` (49 passing) all run clean on a database
+deleted and rebuilt from scratch; every route returns 200 and the claim/skip flow was driven against
+the running server, not just the test client.
 
 ---
 
