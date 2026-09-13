@@ -102,7 +102,8 @@ Reverse-chronological completion log — chore, who, when, late / on-time / skip
 ## T11 — Chore CRUD
 
 `/chores/`, `/chores/new/`, `/chores/<pk>/edit/`, `/chores/<pk>/delete/` via a `ChoreForm` ModelForm.
-Delete is a soft `is_active=False` so history survives. Register all three models in `chores/admin.py`.
+Delete is a soft `is_active=False` so history survives. (Admin registration for all three models is
+already done — it landed early so there was something to inspect before the board existed.)
 
 *Done when:* a chore added through the UI lands in the correct board section; a deleted chore leaves
 `/history/` intact.
